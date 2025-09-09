@@ -25,7 +25,7 @@ This project integrates **computer vision, IoT, and embedded systems** to create
 | Component                    | Purpose                             |
 | ---------------------------- | ----------------------------------- |
 | Raspberry Pi 5 (4GB)         | Main controller                     |
-| HQ Camera or RTSP IP Cameras | Video capture for vehicle detection |
+| RTSP IP Cameras (Hikvision) | Video capture for vehicle detection |
 | LEDs (GPIO 22 & 27)          | Heartbeat and indicator LEDs        |
 | Boom Barrier Relay (GPIO 26) | Control entrance barrier            |
 | I2C LCD (PCF8574, 20x4)      | Display vehicle counts & messages   |
@@ -199,3 +199,4 @@ Truck:0 0%
 * GitHub: [https://github.com/yash-masne](https://github.com/yash-masne)
 
 ---
+
