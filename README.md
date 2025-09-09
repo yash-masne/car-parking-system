@@ -1,147 +1,201 @@
-# Car Parking System using YOLOv5
+# Car Parking Automation System using YOLOv5 & Raspberry Pi
 
-## Overview
-
-This project implements an **automated car parking detection system** using **YOLOv5 object detection**. It uses a **pretrained YOLOv5n model** (`yolov5n.pt`) for detecting cars in a parking lot and helps monitor available parking spaces.
-
-The system is built in **Python** and can be extended for live camera feeds or static images.
+Welcome to my **Car Parking Automation System** project! This is a **smart, real-time vehicle detection and barrier control system** built with Raspberry Pi, YOLOv5, and IoT components. It’s designed to automate parking entrances, detect vehicles, and manage boom barriers efficiently.
 
 ---
 
-## Features
+## **Project Overview**
 
-* Real-time car detection in parking lots.
-* Uses **YOLOv5n pretrained model** for fast inference.
-* Supports both **images** and **video feeds**.
-* Easily extendable to **web-based dashboards** or **IoT integrations**.
+This project integrates **computer vision, IoT, and embedded systems** to create a fully functional parking management solution. It can detect multiple types of vehicles in real-time, display information on an LCD, trigger a boom barrier, and even handle system shutdown safely using a physical button.
 
----
+**Key Features:**
 
-## Repository Structure
-
-```
-project/
-├── yolovenv/                   # Python virtual environment (ignored in git)
-├── data/                       # Optional: sample images or video
-│   ├── images/
-│   └── videos/
-├── models/
-│   └── yolov5n.pt              # Pretrained YOLOv5n weights
-├── scripts/                    # Python scripts for inference
-│   └── detect.py               # Main detection script
-├── requirements.txt            # Python dependencies
-├── README.md                   # Project documentation
-└── .gitignore                  # To ignore venv, logs, etc.
-```
+* **Real-time Vehicle Detection:** Detects Cars, Bikes, Buses, Trucks, and Tractors using **YOLOv5n pre-trained model**.
+* **Multi-Camera Support:** Works with multiple RTSP camera streams for larger parking areas.
+* **Automated Barrier Control:** Opens the boom barrier only when a vehicle is detected and closes it safely after the vehicle leaves.
+* **LCD Display Integration:** Shows vehicle counts, confidence levels, and system status messages.
+* **Heartbeat LED:** Indicates the system is healthy and running.
+* **Manual Shutdown:** Press a dedicated button to safely power off the Raspberry Pi.
+* **Resilient & Robust:** Handles camera disconnections, system errors, and can self-repair with reboot prompts.
 
 ---
 
-## Prerequisites
+## **Hardware Used**
 
-* Python 3.10+
-* pip
-* Git
+| Component                    | Purpose                             |
+| ---------------------------- | ----------------------------------- |
+| Raspberry Pi 5 (4GB)         | Main controller                     |
+| HQ Camera or RTSP IP Cameras | Video capture for vehicle detection |
+| LEDs (GPIO 22 & 27)          | Heartbeat and indicator LEDs        |
+| Boom Barrier Relay (GPIO 26) | Control entrance barrier            |
+| I2C LCD (PCF8574, 20x4)      | Display vehicle counts & messages   |
+| Shutdown Button (GPIO 21)    | Safe manual system shutdown         |
 
 ---
 
-## Setup Instructions
+## **Software & Libraries**
 
-1. **Clone the repository**
+* **Python 3.11**
+* **OpenCV** (for video handling)
+* **Ultralytics YOLOv5** (pre-trained model)
+* **gpiozero** (GPIO pin control)
+* **RPLCD** (LCD display)
+* **threading** (multi-threaded camera & LCD handling)
+* **subprocess** (for safe shutdown and reboot commands)
+
+---
+
+## **System Architecture**
+
+1. **Vehicle Detection Thread:**
+
+   * Captures frames from RTSP cameras.
+   * Runs YOLOv5 detection (`yolov5n.pt` / `yash.onnx`).
+   * Updates detection counts and confidence levels.
+
+2. **LCD Display Thread:**
+
+   * Continuously updates the 20x4 LCD with real-time vehicle data.
+   * Alternates camera display if multiple cameras are active.
+   * Shows “Ready” message when no vehicles are detected.
+
+3. **Boom Barrier Control Thread:**
+
+   * Reads the `detect_flag.txt` updated by YOLO threads.
+   * Opens barrier on vehicle presence, blinks LED for visual feedback.
+   * Closes barrier safely once vehicle leaves.
+
+4. **Shutdown Button Thread:**
+
+   * Monitors GPIO 21 for button press.
+   * Displays shutdown message on LCD.
+   * Executes safe Raspberry Pi shutdown.
+
+---
+
+## **Installation & Setup**
+
+1. **Clone the Repository**
 
 ```bash
 git clone https://github.com/yash-masne/car-parking-system.git
 cd car-parking-system
 ```
 
-2. **Create a virtual environment**
+2. **Install Dependencies**
 
 ```bash
-python -m venv yolovenv
+pip install opencv-python gpiozero RPLCD ultralytics
 ```
 
-3. **Activate the virtual environment**
+3. **Connect Hardware**
 
-* Windows:
+* Connect cameras to Raspberry Pi or network.
+* Connect LEDs and boom barrier relay to GPIO pins (as per code).
+* Connect the I2C LCD.
+* Connect the shutdown button to GPIO 21.
+
+4. **Run the System**
 
 ```bash
-yolovenv\Scripts\activate
+python3 main_system.py
+python3 boom_barrier.py
+python3 shutdown_button.py
 ```
 
-* Linux / Mac:
+> **Tip:** Run all scripts in the background or as services for a fully autonomous system.
 
-```bash
-source yolovenv/bin/activate
+---
+
+## **How it Works**
+
+1. **Startup:**
+
+   * System displays a 20-second countdown on LCD (“Starting in XXs”).
+   * YOLO model is loaded (`yolov5n.pt` or `yash.onnx`).
+   * Heartbeat LED indicates healthy operation.
+
+2. **Vehicle Detection:**
+
+   * Cameras continuously capture video.
+   * YOLO detects vehicles and updates a flag file (`detect_flag.txt`).
+   * LCD shows vehicle type, count, and confidence.
+
+3. **Barrier Automation:**
+
+   * Barrier opens only when a vehicle is detected.
+   * LED blinks while barrier is opening.
+   * Barrier closes automatically once the vehicle leaves.
+
+4. **Error Handling & Resilience:**
+
+   * Detects camera disconnections and attempts reconnection.
+   * LCD shows error messages in case of system failures.
+   * Can reboot itself or alert for manual intervention if critical error occurs.
+
+5. **Manual Shutdown:**
+
+   * Press shutdown button to safely power off Raspberry Pi.
+   * LCD displays shutdown instructions and waits for completion.
+
+---
+
+## **Vehicle Classes Detected**
+
+| Class ID | Vehicle Type |
+| -------- | ------------ |
+| 2        | Car          |
+| 3        | Bike         |
+| 5        | Bus          |
+| 7        | Truck        |
+| 10       | Tractor      |
+
+---
+
+## **Future Improvements**
+
+* Add **license plate recognition** for automatic logging.
+* Integrate **cloud-based monitoring** for multiple parking sites.
+* Use **YOLOv8** or **custom-trained model** for higher detection accuracy.
+* Add **SMS or push notifications** when parking is full.
+
+---
+
+## **Screenshots / Demo**
+
+**LCD Display Example:**
+
+```
+Mauli Water Park
+        Ready
+Waiting for Vehicles
 ```
 
-4. **Install dependencies**
+**Vehicle Detected Example:**
 
-```bash
-pip install -r requirements.txt
+```
+Camera 1: Detected
+Car:2 98%
+Bus:1 90%
+Truck:0 0%
 ```
 
 ---
 
-## YOLOv5 Setup
+## **Why This Project Stands Out**
 
-1. Download the **pretrained YOLOv5n weights**:
-
-```bash
-wget https://github.com/ultralytics/yolov5/releases/download/v6.0/yolov5n.pt -P models/
-```
-
-> Note: Already included in `models/` folder.
-
-2. Ensure your **dataset or images** are in the `data/` folder.
+* Fully automated system integrating **CV, IoT, and embedded hardware**.
+* Robust error handling and graceful shutdown.
+* Multi-threaded design ensures **real-time performance**.
+* Can be extended for **smart cities, malls, and gated communities**.
 
 ---
 
-## Running the Detection Script
+## **Contact**
 
-```bash
-python scripts/detect.py --weights models/yolov5n.pt --source data/images
-```
+**Yash Masne**
 
-* `--weights` → path to YOLOv5 model weights.
-* `--source` → folder of images, videos, or live camera feed.
-* Outputs are saved in `runs/detect/` folder.
+* Email: [yashmasne10@gmail.com](mailto:yashmasne10@gmail.com)
+* GitHub: [https://github.com/yash-masne](https://github.com/yash-masne)
 
 ---
-
-## Requirements.txt
-
-Example dependencies:
-
-```
-torch>=2.0.0
-torchvision>=0.15.0
-opencv-python
-numpy
-matplotlib
-pillow
-PyYAML
-tqdm
-```
-
-> Use `pip freeze > requirements.txt` to generate a full list from your environment.
-
----
-
-## Notes
-
-* **Virtual Environment**: Do not commit `yolovenv/` to GitHub — it's ignored in `.gitignore`.
-* **Large Files**: Torch library files are very large; only `.pt` model weights are included.
-* **YOLOv5n**: Nano model is used for faster inference with minimal GPU usage.
-
----
-
-## References
-
-* [YOLOv5 Official Repo](https://github.com/ultralytics/yolov5)
-* [YOLOv5n pretrained weights](https://github.com/ultralytics/yolov5/releases/download/v6.0/yolov5n.pt)
-
----
-
-This README is **ready-to-use** for GitHub and clearly explains your project, setup, and YOLOv5 usage.
-
----
-
