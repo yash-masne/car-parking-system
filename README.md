@@ -163,6 +163,9 @@ python3 shutdown_button.py
 
 ## **Screenshots / Demo**
 
+**Hardware Setup**
+![Hardware Setup](images/HardwareSetup.jpg)
+
 **LCD Display Example:**
 
 ```
@@ -195,9 +198,10 @@ Truck:0 0%
 
 **Yash Masne**
 
-* Email: [yashmasne10@gmail.com](mailto:yashmasne10@gmail.com)
+* Email: [yashmasne7@gmail.com](mailto:yashmasne7@gmail.com)
 * GitHub: [https://github.com/yash-masne](https://github.com/yash-masne)
 
 ---
+
 
 
