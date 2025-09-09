@@ -9,6 +9,7 @@ import sys
 import subprocess
 import threading
 
+
 # Set OpenCV FFMPEG options for RTSP globally
 os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;tcp;max_delay;1000000"
 
