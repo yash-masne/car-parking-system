@@ -145,6 +145,3 @@ This README is **ready-to-use** for GitHub and clearly explains your project, se
 
 ---
 
-If you want, I can also **write a Python detect.py template** for your project with proper paths for `yolov5n.pt` and sample image detection, ready to run.
-
-Do you want me to do that?
