@@ -334,7 +334,7 @@ if __name__ == "__main__":
 
         # --- Load YOLO Model ---
         try:
-            model = YOLO("yash.onnx", task='detect')
+            model = YOLO("yolov5n.onnx", task='detect')
             led_status.on()  # Success: LED ON
             if lcd:
                 try:
