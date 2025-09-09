@@ -1,0 +1,39 @@
+sudo -E /home/yashmasne/project/yolovenv/bin/python3 main.py
+
+
+sudo -E /home/yashmasne/project/yolovenv/bin/python3 /home/yashmasne/project/signal_led.py
+
+services name  : main.service and signal_led.service and wait-for-network-cameras.service
+ and shutdown-button.service
+
+To Stop Service :
+	sudo systemctl stop main.service
+	sudo systemctl stop signal_led.service
+	sudo systemctl stop shutdown-button.service
+To Start Again :
+	sudo systemctl start main.service
+	sudo systemctl start signal_led.service
+	sudo systemctl start shutdown-button.service
+
+Check Running : 
+	sudo systemctl status main.service
+	sudo systemctl status signal_led.service
+	sudo systemctl status shutdown-button.service
+
+Check LiveLogs:
+	journalctl -u main.service -f
+	journalctl -u signal_led.service -f
+	journalctl -u shutdown-button.service -f
+
+Instant Kill Service:
+	sudo kill -SIGINT $(pidof python3)
+
+Complete Kill Service :
+	sudo kill -SIGINT $(pidof python3)
+	sudo systemctl stop main.service
+	sudo systemctl stop signal_led.service
+	sudo systemctl stop shutdown-button.service
+
+
+
+
