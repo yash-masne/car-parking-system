@@ -1,6 +1,8 @@
 # Car Parking Automation System using YOLOv5 & Raspberry Pi
 
-Welcome to my **Car Parking Automation System** project! This is a **smart, real-time vehicle detection and barrier control system** built with Raspberry Pi, YOLOv5, and IoT components. It’s designed to automate parking entrances, detect vehicles, and manage boom barriers efficiently.
+This is a **fully deployed, real-time automated car parking system** using Raspberry Pi and YOLOv5 for vehicle detection.  
+The system actively manages vehicle entry and exit, controls boom barriers, and updates an LCD display with live stats for multiple vehicle types.  
+Deployed at **Mauli Water Park**, ensuring efficient and smooth vehicle management in a live environment.
 
 ---
 
@@ -8,15 +10,13 @@ Welcome to my **Car Parking Automation System** project! This is a **smart, real
 
 This project integrates **computer vision, IoT, and embedded systems** to create a fully functional parking management solution. It can detect multiple types of vehicles in real-time, display information on an LCD, trigger a boom barrier, and even handle system shutdown safely using a physical button.
 
-**Key Features:**
+## Key Features
 
-* **Real-time Vehicle Detection:** Detects Cars, Bikes, Buses, Trucks, and Tractors using **YOLOv5n pre-trained model**.
-* **Multi-Camera Support:** Works with multiple RTSP camera streams for larger parking areas.
-* **Automated Barrier Control:** Opens the boom barrier only when a vehicle is detected and closes it safely after the vehicle leaves.
-* **LCD Display Integration:** Shows vehicle counts, confidence levels, and system status messages.
-* **Heartbeat LED:** Indicates the system is healthy and running.
-* **Manual Shutdown:** Press a dedicated button to safely power off the Raspberry Pi.
-* **Resilient & Robust:** Handles camera disconnections, system errors, and can self-repair with reboot prompts.
+- **Real-time vehicle detection** with YOLOv5 (ONNX model)
+- **Automated boom barrier** control using GPIO and LEDs
+- **LCD display** showing live vehicle counts and types
+- **Multi-threaded design** for reliability and continuous operation
+- **Self-recovery** in case of errors or camera disconnects
 
 ---
 
@@ -203,6 +203,7 @@ Truck:0 0%
 * GitHub: [https://github.com/yash-masne](https://github.com/yash-masne)
 
 ---
+
 
 
 
