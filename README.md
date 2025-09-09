@@ -166,8 +166,8 @@ python3 shutdown_button.py
 **LCD Display Example:**
 
 ```
-Mauli Water Park
-        Ready
+  Mauli Water Park
+       Ready
 Waiting for Vehicles
 ```
 
@@ -199,4 +199,5 @@ Truck:0 0%
 * GitHub: [https://github.com/yash-masne](https://github.com/yash-masne)
 
 ---
+
 
